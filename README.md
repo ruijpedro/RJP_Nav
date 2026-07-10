@@ -1,0 +1,32 @@
+# RJP Navigator V3
+
+Aplicação Android/Web para apoio à navegação técnica na Linha do Oeste.
+
+## Troço configurado
+
+- Início: PK 21+190
+- Fim: PK 191+197
+
+## Funcionalidades
+
+- Estações e apeadeiros com coordenadas SIG importadas do ficheiro fornecido.
+- Edifícios ferroviários associados às estações.
+- Nova lista de Passagens de Nível, filtrada ao troço.
+- Clique num ativo e escolha Google Maps ou Waze.
+- Pedido de permissão GPS no Android.
+- Guardar/atualizar coordenadas GPS num ativo.
+- Pesquisa por PK, distrito, concelho, freguesia e classificação.
+- Exportação local JSON.
+- Build automático de WebApp e APK no GitHub Actions.
+
+## Criar o repositório
+
+1. Cria um repositório vazio chamado `RJP-Navigator-V3`.
+2. Extrai este ZIP.
+3. Carrega todos os ficheiros e pastas para a raiz do repositório.
+4. Abre **Actions** e executa `Build RJP Navigator Android APK`.
+5. O APK ficará em **Artifacts**.
+
+## Nota sobre coordenadas das PN
+
+Quando uma PN ainda não tem GPS confirmado, a aplicação calcula uma posição aproximada pelo PK entre as estações/apeadeiros de referência mais próximos. A localização guardada no terreno substitui sempre essa estimativa.

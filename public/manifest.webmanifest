@@ -1,0 +1,14 @@
+{
+  "name": "RJP Navigator",
+  "short_name": "RJP Navigator",
+  "description": "Navegador técnico para a Linha do Oeste",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f2f6f3",
+  "theme_color": "#006b3f",
+  "icons": [
+    { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

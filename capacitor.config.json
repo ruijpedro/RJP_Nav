@@ -1,0 +1,6 @@
+{
+  "appId": "pt.rjp.navigator.v3",
+  "appName": "RJP Navigator",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}

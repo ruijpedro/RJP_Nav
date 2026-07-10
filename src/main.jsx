@@ -60,34 +60,34 @@ function App(){
   const current = sel && filtrados.some(x=>x.key===sel.key) ? sel : filtrados[0]
 
   async function verificarPermissao(){
+    if(!navigator.geolocation){
+      setGpsEstado('Indisponível')
+      return
+    }
     try{
-      if(window.Capacitor?.isNativePlatform?.()){
-        const { Geolocation } = await import('@capacitor/geolocation')
-        const p = await Geolocation.checkPermissions()
-        setGpsEstado(p.location === 'granted' || p.coarseLocation === 'granted' ? 'Autorizado' : p.location === 'denied' ? 'Recusado' : 'Por autorizar')
-      } else setGpsEstado(navigator.geolocation ? 'Disponível no navegador' : 'Indisponível')
-    }catch{ setGpsEstado('Por verificar') }
+      if(navigator.permissions?.query){
+        const p = await navigator.permissions.query({ name: 'geolocation' })
+        const atualizar = () => setGpsEstado(p.state === 'granted' ? 'Autorizado' : p.state === 'denied' ? 'Recusado' : 'Por autorizar')
+        atualizar()
+        p.onchange = atualizar
+      }else{
+        setGpsEstado('Por autorizar')
+      }
+    }catch{
+      setGpsEstado('Por autorizar')
+    }
   }
 
   async function obterGPS(){
     setGpsBusy(true)
     try{
-      let p
-      if(window.Capacitor?.isNativePlatform?.()){
-        const { Geolocation } = await import('@capacitor/geolocation')
-        const perm = await Geolocation.requestPermissions()
-        if(perm.location !== 'granted' && perm.coarseLocation !== 'granted'){
-          setGpsEstado('Recusado')
-          alert('A localização não foi autorizada. No Android: Definições > Aplicações > RJP Navigator > Permissões > Localização.')
-          return
-        }
-        setGpsEstado('Autorizado')
-        p = await Geolocation.getCurrentPosition({enableHighAccuracy:true,timeout:20000,maximumAge:0})
-      }else{
-        if(!navigator.geolocation) throw new Error('GPS indisponível')
-        p = await new Promise((resolve,reject)=>navigator.geolocation.getCurrentPosition(resolve,reject,{enableHighAccuracy:true,timeout:20000,maximumAge:0}))
-        setGpsEstado('Autorizado')
-      }
+      if(!navigator.geolocation) throw new Error('GPS indisponível')
+      const p = await new Promise((resolve,reject)=>
+        navigator.geolocation.getCurrentPosition(resolve,reject,{
+          enableHighAccuracy:true, timeout:20000, maximumAge:0
+        })
+      )
+      setGpsEstado('Autorizado')
       setGps({
         lat:Number(p.coords.latitude).toFixed(6), lng:Number(p.coords.longitude).toFixed(6),
         acc:Math.round(p.coords.accuracy || 0), alt:p.coords.altitude == null ? '' : Math.round(p.coords.altitude),
@@ -95,7 +95,8 @@ function App(){
       })
     }catch(e){
       console.error(e)
-      alert('Não foi possível obter a posição. Confirma se o GPS está ligado e se a aplicação tem permissão de localização.')
+      if(e?.code === 1) setGpsEstado('Recusado')
+      alert('Não foi possível obter a posição. Confirma se o GPS está ligado e autoriza a localização quando o Android pedir.')
     }finally{ setGpsBusy(false) }
   }
 

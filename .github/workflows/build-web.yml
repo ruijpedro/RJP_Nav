@@ -21,23 +21,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
 
-      - name: Use stable npm
+      - name: Show versions
         run: |
-          npm install -g npm@10.9.2
-          npm --version
           node --version
+          npm --version
 
       - name: Install dependencies
-        run: |
-          rm -rf node_modules
-          npm cache clean --force
-          npm ci --include=dev --no-audit --no-fund --legacy-peer-deps
+        run: npm ci --include=dev --no-audit --no-fund
 
       - name: Verify Vite
-        run: |
-          test -x node_modules/.bin/vite
-          node_modules/.bin/vite --version
+        run: ./node_modules/.bin/vite --version
 
       - name: Build WebApp
         run: npm run build
@@ -47,3 +42,4 @@ jobs:
         with:
           name: RJP_Navigator_Web
           path: dist
+          if-no-files-found: error

@@ -21,23 +21,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
 
-      - name: Use stable npm
+      - name: Show versions
         run: |
-          npm install -g npm@10.9.2
-          npm --version
           node --version
+          npm --version
 
       - name: Install dependencies
-        run: |
-          rm -rf node_modules
-          npm cache clean --force
-          npm ci --include=dev --no-audit --no-fund --legacy-peer-deps
+        run: npm ci --include=dev --no-audit --no-fund
 
       - name: Verify Vite
-        run: |
-          test -x node_modules/.bin/vite
-          node_modules/.bin/vite --version
+        run: ./node_modules/.bin/vite --version
 
       - name: Build WebApp
         run: npm run build
@@ -52,27 +47,30 @@ jobs:
       - name: Create Android project
         run: |
           rm -rf android
-          npx cap add android
-          npx cap sync android
+          npx --no-install cap add android
+          npx --no-install cap sync android
 
       - name: Configure Android manifest and icon
         run: |
           python3 - <<'PY'
           from pathlib import Path
           import re
+
           p = Path('android/app/src/main/AndroidManifest.xml')
           s = p.read_text(encoding='utf-8')
           m = re.search(r'<manifest\b[^>]*>', s)
           if not m:
               raise SystemExit('AndroidManifest.xml inválido')
-          entries = [
+
+          permissions = [
               '<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />',
               '<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />',
               '<uses-feature android:name="android.hardware.location.gps" android:required="false" />'
           ]
-          missing = [entry for entry in entries if entry not in s]
+          missing = [entry for entry in permissions if entry not in s]
           if missing:
               s = s[:m.end()] + '\n    ' + '\n    '.join(missing) + s[m.end():]
+
           s = re.sub(r'android:icon="@[^"]+"', 'android:icon="@mipmap/ic_launcher"', s)
           s = re.sub(r'android:roundIcon="@[^"]+"', 'android:roundIcon="@mipmap/ic_launcher_round"', s)
           if 'android:roundIcon=' not in s:
@@ -112,3 +110,4 @@ jobs:
         with:
           name: RJP_Navigator_V3_APK
           path: RJP_Navigator_V3.apk
+          if-no-files-found: error

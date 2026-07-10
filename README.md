@@ -30,3 +30,7 @@ Aplicação Android/Web para apoio à navegação técnica na Linha do Oeste.
 ## Nota sobre coordenadas das PN
 
 Quando uma PN ainda não tem GPS confirmado, a aplicação calcula uma posição aproximada pelo PK entre as estações/apeadeiros de referência mais próximos. A localização guardada no terreno substitui sempre essa estimativa.
+
+
+## Correção V3.0.1 — Vite não encontrado
+Os workflows fixam o npm em `10.9.2`, limpam a cache, executam `npm ci --include=dev` e verificam a instalação local do Vite antes do build.

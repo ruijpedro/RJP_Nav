@@ -37,3 +37,6 @@ Os workflows fixam o npm em `10.9.2`, limpam a cache, executam `npm ci --include
 
 ## Correção V3.0.3
 Os workflows usam Node.js 22 e `npm install --include=dev`, validando a existência do Vite e do Capacitor antes do build. Isto corrige o caso em que `npm ci` terminava sem criar `node_modules/.bin/vite`.
+
+## V3.0.4 — correção do gestor de pacotes
+Os workflows usam Yarn 4 através do Corepack. O npm foi removido do processo de build para evitar o erro interno `Exit handler never called` observado no GitHub Actions.

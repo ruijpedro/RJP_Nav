@@ -1,4 +1,4 @@
-name: Build RJP Navigator V3 Android APK
+name: Build RJP Navigator Android APK
 
 on:
   push:
@@ -11,7 +11,7 @@ permissions:
 jobs:
   build-android:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 40
 
     steps:
       - name: Checkout
@@ -20,8 +20,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm
+          node-version: 22
 
       - name: Show versions
         run: |
@@ -29,85 +28,76 @@ jobs:
           npm --version
 
       - name: Install dependencies
-        run: npm ci --include=dev --no-audit --no-fund
-
-      - name: Verify Vite
-        run: ./node_modules/.bin/vite --version
+        env:
+          NODE_ENV: development
+          NPM_CONFIG_PRODUCTION: "false"
+        run: |
+          npm install --include=dev --legacy-peer-deps --no-audit --no-fund
+          npm ls vite @vitejs/plugin-react @capacitor/cli @capacitor/android @capacitor/geolocation
+          test -x node_modules/.bin/vite
+          test -x node_modules/.bin/cap
 
       - name: Build WebApp
-        run: npm run build
+        run: npx --no-install vite build
+
+      - name: Create Android project
+        run: |
+          if [ ! -d android ]; then
+            npx --no-install cap add android
+          fi
+          npx --no-install cap sync android
+
+      - name: Apply Android permissions and icons
+        run: |
+          MANIFEST="android/app/src/main/AndroidManifest.xml"
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("android/app/src/main/AndroidManifest.xml")
+          s = p.read_text(encoding="utf-8")
+          permissions = [
+              '<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />',
+              '<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />'
+          ]
+          insert_at = s.find('>') + 1
+          for permission in reversed(permissions):
+              if permission not in s:
+                  s = s[:insert_at] + "\n    " + permission + s[insert_at:]
+          p.write_text(s, encoding="utf-8")
+          PY
+
+          for density in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
+            mkdir -p "android/app/src/main/res/mipmap-$density"
+            cp "android-res/mipmap-$density/ic_launcher.png" "android/app/src/main/res/mipmap-$density/ic_launcher.png"
+            cp "android-res/mipmap-$density/ic_launcher.png" "android/app/src/main/res/mipmap-$density/ic_launcher_round.png"
+            cp "android-res/mipmap-$density/ic_launcher_adaptive_back.png" "android/app/src/main/res/mipmap-$density/ic_launcher_adaptive_back.png"
+            cp "android-res/mipmap-$density/ic_launcher_adaptive_fore.png" "android/app/src/main/res/mipmap-$density/ic_launcher_adaptive_fore.png"
+          done
+
+          mkdir -p android/app/src/main/res/mipmap-anydpi-v26
+          cat > android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml <<'XML'
+          <?xml version="1.0" encoding="utf-8"?>
+          <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+            <background android:drawable="@mipmap/ic_launcher_adaptive_back"/>
+            <foreground android:drawable="@mipmap/ic_launcher_adaptive_fore"/>
+          </adaptive-icon>
+          XML
+          cp android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
 
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 21
-          cache: gradle
-
-      - name: Create Android project
-        run: |
-          rm -rf android
-          npx --no-install cap add android
-          npx --no-install cap sync android
-
-      - name: Configure Android manifest and icon
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          import re
-
-          p = Path('android/app/src/main/AndroidManifest.xml')
-          s = p.read_text(encoding='utf-8')
-          m = re.search(r'<manifest\b[^>]*>', s)
-          if not m:
-              raise SystemExit('AndroidManifest.xml inválido')
-
-          permissions = [
-              '<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />',
-              '<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />',
-              '<uses-feature android:name="android.hardware.location.gps" android:required="false" />'
-          ]
-          missing = [entry for entry in permissions if entry not in s]
-          if missing:
-              s = s[:m.end()] + '\n    ' + '\n    '.join(missing) + s[m.end():]
-
-          s = re.sub(r'android:icon="@[^"]+"', 'android:icon="@mipmap/ic_launcher"', s)
-          s = re.sub(r'android:roundIcon="@[^"]+"', 'android:roundIcon="@mipmap/ic_launcher_round"', s)
-          if 'android:roundIcon=' not in s:
-              s = s.replace(
-                  'android:icon="@mipmap/ic_launcher"',
-                  'android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round"'
-              )
-          s = re.sub(r'android:label="[^"]+"', 'android:label="RJP Navigator"', s, count=1)
-          p.write_text(s, encoding='utf-8')
-          PY
-
-          cp -R android-res/* android/app/src/main/res/
-          for d in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
-            cp "android/app/src/main/res/mipmap-$d/ic_launcher.png" \
-               "android/app/src/main/res/mipmap-$d/ic_launcher_round.png"
-          done
-          cp android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml \
-             android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
-
-          python3 - <<'PY'
-          import xml.etree.ElementTree as ET
-          ET.parse('android/app/src/main/AndroidManifest.xml')
-          print('AndroidManifest.xml válido')
-          PY
 
       - name: Build APK
+        working-directory: android
         run: |
-          cd android
           chmod +x gradlew
-          ./gradlew assembleDebug --stacktrace
-
-      - name: Rename APK
-        run: cp android/app/build/outputs/apk/debug/app-debug.apk RJP_Navigator_V3.apk
+          ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: RJP_Navigator_V3_APK
-          path: RJP_Navigator_V3.apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error

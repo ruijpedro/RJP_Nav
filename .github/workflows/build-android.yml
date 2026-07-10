@@ -1,0 +1,93 @@
+name: Build RJP Navigator V3 Android APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund --legacy-peer-deps
+
+      - name: Build WebApp
+        run: npm run build
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+
+      - name: Create Android project
+        run: |
+          rm -rf android
+          npx cap add android
+          npx cap sync android
+
+      - name: Configure Android manifest and icon
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('android/app/src/main/AndroidManifest.xml')
+          s=p.read_text(encoding='utf-8')
+          m=re.search(r'<manifest\b[^>]*>',s)
+          if not m: raise SystemExit('Manifest inválido')
+          perms=[
+            '<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />',
+            '<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />',
+            '<uses-feature android:name="android.hardware.location.gps" android:required="false" />'
+          ]
+          add=[x for x in perms if x not in s]
+          if add: s=s[:m.end()]+'\n    '+'\n    '.join(add)+s[m.end():]
+          s=re.sub(r'android:icon="@[^"]+"','android:icon="@mipmap/ic_launcher"',s)
+          s=re.sub(r'android:roundIcon="@[^"]+"','android:roundIcon="@mipmap/ic_launcher_round"',s)
+          if 'android:roundIcon=' not in s:
+            s=s.replace('android:icon="@mipmap/ic_launcher"','android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round"')
+          s=re.sub(r'android:label="[^"]+"','android:label="RJP Navigator"',s,count=1)
+          p.write_text(s,encoding='utf-8')
+          PY
+          cp -R android-res/* android/app/src/main/res/
+          for d in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
+            cp "android/app/src/main/res/mipmap-$d/ic_launcher.png" "android/app/src/main/res/mipmap-$d/ic_launcher_round.png"
+          done
+          cp android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          ET.parse('android/app/src/main/AndroidManifest.xml')
+          print('AndroidManifest.xml válido')
+          PY
+          grep -n "ACCESS_.*LOCATION\|android:icon\|roundIcon" android/app/src/main/AndroidManifest.xml
+
+      - name: Build APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug --stacktrace
+
+      - name: Rename APK
+        run: cp android/app/build/outputs/apk/debug/app-debug.apk RJP_Navigator_V3.apk
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: RJP_Navigator_V3_APK
+          path: RJP_Navigator_V3.apk

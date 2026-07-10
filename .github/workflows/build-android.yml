@@ -1,4 +1,4 @@
-name: Build RJP Navigator Android APK
+name: Build RJP Navigator Android APK V3.0.6
 
 on:
   push:
@@ -46,6 +46,12 @@ jobs:
             yarn cap add android
           fi
           yarn cap sync android
+          echo "Plugins nativos configurados:"
+          cat android/capacitor.settings.gradle || true
+          if grep -R "capacitor-geolocation" android/capacitor.settings.gradle android/app/capacitor.build.gradle 2>/dev/null; then
+            echo "ERRO: referência antiga ao capacitor-geolocation encontrada."
+            exit 1
+          fi
 
       - name: Apply Android permissions and icons
         run: |

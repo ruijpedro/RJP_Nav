@@ -21,10 +21,23 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
+
+      - name: Use stable npm
+        run: |
+          npm install -g npm@10.9.2
+          npm --version
+          node --version
 
       - name: Install dependencies
-        run: npm ci --no-audit --no-fund --legacy-peer-deps
+        run: |
+          rm -rf node_modules
+          npm cache clean --force
+          npm ci --include=dev --no-audit --no-fund --legacy-peer-deps
+
+      - name: Verify Vite
+        run: |
+          test -x node_modules/.bin/vite
+          node_modules/.bin/vite --version
 
       - name: Build WebApp
         run: npm run build
@@ -47,35 +60,43 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
           import re
-          p=Path('android/app/src/main/AndroidManifest.xml')
-          s=p.read_text(encoding='utf-8')
-          m=re.search(r'<manifest\b[^>]*>',s)
-          if not m: raise SystemExit('Manifest inválido')
-          perms=[
-            '<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />',
-            '<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />',
-            '<uses-feature android:name="android.hardware.location.gps" android:required="false" />'
+          p = Path('android/app/src/main/AndroidManifest.xml')
+          s = p.read_text(encoding='utf-8')
+          m = re.search(r'<manifest\b[^>]*>', s)
+          if not m:
+              raise SystemExit('AndroidManifest.xml inválido')
+          entries = [
+              '<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />',
+              '<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />',
+              '<uses-feature android:name="android.hardware.location.gps" android:required="false" />'
           ]
-          add=[x for x in perms if x not in s]
-          if add: s=s[:m.end()]+'\n    '+'\n    '.join(add)+s[m.end():]
-          s=re.sub(r'android:icon="@[^"]+"','android:icon="@mipmap/ic_launcher"',s)
-          s=re.sub(r'android:roundIcon="@[^"]+"','android:roundIcon="@mipmap/ic_launcher_round"',s)
+          missing = [entry for entry in entries if entry not in s]
+          if missing:
+              s = s[:m.end()] + '\n    ' + '\n    '.join(missing) + s[m.end():]
+          s = re.sub(r'android:icon="@[^"]+"', 'android:icon="@mipmap/ic_launcher"', s)
+          s = re.sub(r'android:roundIcon="@[^"]+"', 'android:roundIcon="@mipmap/ic_launcher_round"', s)
           if 'android:roundIcon=' not in s:
-            s=s.replace('android:icon="@mipmap/ic_launcher"','android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round"')
-          s=re.sub(r'android:label="[^"]+"','android:label="RJP Navigator"',s,count=1)
-          p.write_text(s,encoding='utf-8')
+              s = s.replace(
+                  'android:icon="@mipmap/ic_launcher"',
+                  'android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round"'
+              )
+          s = re.sub(r'android:label="[^"]+"', 'android:label="RJP Navigator"', s, count=1)
+          p.write_text(s, encoding='utf-8')
           PY
+
           cp -R android-res/* android/app/src/main/res/
           for d in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
-            cp "android/app/src/main/res/mipmap-$d/ic_launcher.png" "android/app/src/main/res/mipmap-$d/ic_launcher_round.png"
+            cp "android/app/src/main/res/mipmap-$d/ic_launcher.png" \
+               "android/app/src/main/res/mipmap-$d/ic_launcher_round.png"
           done
-          cp android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+          cp android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml \
+             android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+
           python3 - <<'PY'
           import xml.etree.ElementTree as ET
           ET.parse('android/app/src/main/AndroidManifest.xml')
           print('AndroidManifest.xml válido')
           PY
-          grep -n "ACCESS_.*LOCATION\|android:icon\|roundIcon" android/app/src/main/AndroidManifest.xml
 
       - name: Build APK
         run: |

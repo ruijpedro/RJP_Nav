@@ -34,3 +34,6 @@ Quando uma PN ainda não tem GPS confirmado, a aplicação calcula uma posição
 
 ## Correção V3.0.1 — Vite não encontrado
 Os workflows fixam o npm em `10.9.2`, limpam a cache, executam `npm ci --include=dev` e verificam a instalação local do Vite antes do build.
+
+## Correção V3.0.3
+Os workflows usam Node.js 22 e `npm install --include=dev`, validando a existência do Vite e do Capacitor antes do build. Isto corrige o caso em que `npm ci` terminava sem criar `node_modules/.bin/vite`.

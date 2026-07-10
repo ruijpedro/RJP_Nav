@@ -1,3 +1,11 @@
+## RJP Navigator V3.1.0
+
+Cada PN, estação, apeadeiro e EDF é um atalho direto para escolher Google Maps ou Waze. As PN usam a coordenada ferroviária correspondente ao Km da Linha do Oeste.
+
+# RJP Navigator V3.0.8
+
+Correção da apresentação das Passagens de Nível: os quilómetros são mostrados exclusivamente com vírgula, por exemplo `157,708`, sem o formato `157+708`.
+
 # RJP Navigator V3
 
 Aplicação Android/Web para apoio à navegação técnica na Linha do Oeste.
@@ -40,3 +48,10 @@ Os workflows usam Node.js 22 e `npm install --include=dev`, validando a existên
 
 ## V3.0.4 — correção do gestor de pacotes
 Os workflows usam Yarn 4 através do Corepack. O npm foi removido do processo de build para evitar o erro interno `Exit handler never called` observado no GitHub Actions.
+
+
+## V3.0.9 — Referenciação ferroviária das PN
+- PN ordenadas por Km crescente e apresentadas com vírgula.
+- Localidade/concelho/freguesia mantidos apenas como dados informativos.
+- Google Maps e Waze usam sempre latitude/longitude calculadas a partir do Km na Linha do Oeste.
+- Cálculo por interpolação entre estações/apeadeiros oficiais do SIG IP ordenados por Km; não usa pesquisa por nomes de terras.

@@ -13,10 +13,18 @@ const load = (k,d) => { try { return JSON.parse(localStorage.getItem(k) || JSON.
 const save = (k,v) => localStorage.setItem(k, JSON.stringify(v))
 const today = () => new Date().toISOString().slice(0,10)
 const base = import.meta.env.BASE_URL || './'
+const kmVisivel = item => {
+  const valor = item?.km || item?.pk || ''
+  return item?.categoria === 'Passagem de Nível'
+    ? String(valor).replace('+', ',')
+    : String(valor)
+}
 
-const queryFor = item => item.lat && item.lng
-  ? `${item.lat},${item.lng}`
-  : `${item.nome || item.localidade || item.titulo || ''} ${item.concelho || ''} Portugal`
+const queryFor = item => {
+  if(item.lat && item.lng) return `${item.lat},${item.lng}`
+  if(item.categoria === 'Passagem de Nível') return ''
+  return `${item.nome || item.titulo || ''} Portugal`
+}
 const mapsUrl = item => `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(queryFor(item))}&travelmode=driving`
 const wazeUrl = item => `https://waze.com/ul?q=${encodeURIComponent(queryFor(item))}&navigate=yes`
 
@@ -43,7 +51,7 @@ function App(){
   const ativos = useMemo(()=>[
     ...estacoesLinhaOeste.map(x=>withGps({...x,key:`est-${x.id}`,titulo:x.nome,categoria:'Estação/Apeadeiro'})),
     ...estacoesLinhaOeste.filter(x=>String(x.tipo).includes('Estação')).map(x=>withGps({...x,key:`edf-${x.id}`,categoria:'Edifício',titulo:`EDF · ${x.nome}`,observacoes:'Edifício ferroviário associado à estação'})),
-    ...passagensNivelLinhaOeste.map(x=>withGps({...x,key:`pn-${x.id}`,categoria:'Passagem de Nível',titulo:`PN · Km ${x.km || x.pk}`})),
+    ...passagensNivelLinhaOeste.map(x=>withGps({...x,key:`pn-${x.id}`,categoria:'Passagem de Nível',titulo:`PN · Km ${kmVisivel({...x,categoria:'Passagem de Nível'})}`})),
     ...marcosKmLinhaOeste.map(x=>withGps({...x,key:`km-${x.id}`,categoria:'Marco Quilométrico',titulo:x.nome})),
     ...extras.map((x,i)=>withGps({...x,key:x.key || `extra-${i}`,titulo:x.nome || 'Local registado'}))
   ],[extras,gpsAtivos])
@@ -121,6 +129,7 @@ function App(){
 
 
   function abrirNavegacao(item, app){
+    if(!queryFor(item)){ alert('Esta PN ainda não tem coordenada ferroviária associada ao Km.'); return }
     const url = app === 'waze' ? wazeUrl(item) : mapsUrl(item)
     setNavTarget(null)
     window.location.href = url
@@ -144,7 +153,7 @@ function App(){
     <header>
       <img src={`${base}ip-logo.png`} alt="RJP Navigator" />
       <div><h1>RJP Navigator</h1><p>Linha do Oeste · PK 21+190 a 191+197</p></div>
-      <span className="version">V3.0</span>
+      <span className="version">V3.1.0</span>
     </header>
     <nav>{tabs.map(([k,t])=><button key={k} className={tab===k?'on':''} onClick={()=>{setTab(k);setSel(null);setQ('')}}>{t}</button>)}</nav>
 
@@ -155,10 +164,10 @@ function App(){
     </main>}
 
     {['estacoes','edificios','pn','km','mapa'].includes(tab) && <main className="layout">
-      <aside className="card list"><input value={q} onChange={e=>setQ(e.target.value)} placeholder="Pesquisar por Km, distrito, concelho, freguesia ou classificação…"/><div className="count">{filtrados.length} registos</div>{filtrados.map(item=><button key={item.key} className={`row ${current?.key===item.key?'sel':''}`} onClick={()=>clicarAtivo(item)}><b>{item.titulo}</b><small>{item.categoria==='Passagem de Nível' ? `${item.freguesia || 'Sem freguesia'}${item.concelho?` · ${item.concelho}`:''}${item.classificacao?` · Tipo ${item.classificacao}`:''}` : `${item.localidade || item.nome || ''}${item.concelho?` · ${item.concelho}`:''}`}</small>{item.gpsSaved && <span className="gpsdot">GPS</span>}</button>)}</aside>
+      <aside className="card list"><input value={q} onChange={e=>setQ(e.target.value)} placeholder="Pesquisar por Km ou classificação…"/><div className="count">{filtrados.length} registos</div>{filtrados.map(item=><button key={item.key} className={`row ${current?.key===item.key?'sel':''}`} onClick={()=>clicarAtivo(item)}><b>{item.titulo}{['Passagem de Nível','Edifício','Estação/Apeadeiro'].includes(item.categoria) && <span aria-label="Navegar"> 🧭</span>}</b><small>{item.categoria==='Passagem de Nível' ? `${item.classificacao ? `Classificação ${item.classificacao} · ` : ''}Referenciada pelo Km na Linha do Oeste` : `${item.localidade || item.nome || ''}${item.concelho?` · ${item.concelho}`:''}`}</small>{item.gpsSaved && <span className="gpsdot">GPS</span>}</button>)}</aside>
       <section className="card detail">{current ? <>
         <div className="detailhead"><div><h2>{current.titulo}</h2><span className="pill">{current.categoria}</span></div>{current.gpsSaved && <span className="saved">GPS guardado</span>}</div>
-        <dl><dt>Km/PK</dt><dd>{current.km || current.pk || '-'}</dd>{current.categoria==='Passagem de Nível' ? <><dt>Distrito</dt><dd>{current.distrito || '-'}</dd><dt>Concelho</dt><dd>{current.concelho || '-'}</dd><dt>Freguesia</dt><dd>{current.freguesia || '-'}</dd><dt>Classificação</dt><dd>{current.classificacao || '-'}</dd></> : <><dt>Localidade</dt><dd>{current.localidade || current.nome || '-'}</dd><dt>Concelho</dt><dd>{current.concelho || '-'}</dd><dt>Freguesia</dt><dd>{current.freguesia || '-'}</dd></>}<dt>Coordenadas</dt><dd>{current.lat && current.lng ? `${current.lat}, ${current.lng}` : 'Sem localização guardada'}</dd><dt>Fonte GPS</dt><dd>{current.gpsSaved ? 'Confirmado no terreno' : (current.fonteGps || 'Sem referência')}</dd>{current.gpsSaved && <><dt>Precisão</dt><dd>±{current.gpsSaved.acc} m · {current.gpsSaved.data} {current.gpsSaved.hora}</dd></>}</dl>
+        <dl><dt>Km/PK</dt><dd>{kmVisivel(current) || '-'}</dd>{current.categoria==='Passagem de Nível' ? <><dt>Distrito</dt><dd>{current.distrito || '-'}</dd><dt>Concelho</dt><dd>{current.concelho || '-'}</dd><dt>Freguesia</dt><dd>{current.freguesia || '-'}</dd><dt>Classificação</dt><dd>{current.classificacao || '-'}</dd></> : <><dt>Localidade</dt><dd>{current.localidade || current.nome || '-'}</dd><dt>Concelho</dt><dd>{current.concelho || '-'}</dd><dt>Freguesia</dt><dd>{current.freguesia || '-'}</dd></>}<dt>Coordenadas</dt><dd>{current.lat && current.lng ? `${current.lat}, ${current.lng}` : 'Sem localização guardada'}</dd><dt>Fonte GPS</dt><dd>{current.gpsSaved ? 'Confirmado no terreno' : (current.fonteGps || 'Sem referência')}</dd>{current.gpsSaved && <><dt>Precisão</dt><dd>±{current.gpsSaved.acc} m · {current.gpsSaved.data} {current.gpsSaved.hora}</dd></>}</dl>
         {tab==='km' && <div className="pkbox"><h3>Referências</h3>{marcosPrincipaisLinhaOeste.map(m=><button key={m.pk} className="tag" onClick={()=>setQ(m.pk)}>{m.pk} · {m.nome}</button>)}</div>}
         {tab==='mapa' && <iframe title="mapa" className="map" src={`https://www.openstreetmap.org/export/embed.html?bbox=-9.45%2C38.55%2C-8.65%2C39.95&layer=mapnik&marker=${current.lat || 39.743}%2C${current.lng || -8.807}`}/>} 
         <div className="actions"><button onClick={obterGPS}>{gpsBusy?'A obter…':'Obter GPS atual'}</button><button onClick={()=>guardarGPSAtivo(current)}>Guardar neste ativo</button><a href={mapsUrl(current)} target="_blank" rel="noreferrer">Google Maps</a><a href={wazeUrl(current)} target="_blank" rel="noreferrer">Waze</a><button className="secondary" onClick={()=>registarDeslocacao(current)}>Registar deslocação</button></div>
@@ -168,8 +177,8 @@ function App(){
     {tab==='novo' && <main className="card form"><h2>Novo local</h2><p>Regista uma PN ou outro ativo e associa a posição atual.</p><button onClick={obterGPS}>{gpsBusy?'A obter GPS…':'Capturar GPS'}</button>{gps && <p className="ok">{gps.lat}, {gps.lng} · ±{gps.acc} m</p>}<label>Categoria<select value={form.categoria} onChange={e=>setForm({...form,categoria:e.target.value})}><option>Passagem de Nível</option><option>Estação/Apeadeiro</option><option>Edifício</option><option>Outro</option></select></label><label>Nome<input value={form.nome} onChange={e=>setForm({...form,nome:e.target.value})}/></label><label>Km/PK<input value={form.pk} onChange={e=>setForm({...form,pk:e.target.value})} placeholder="Ex.: 157,708"/></label><label>Localidade<input value={form.localidade} onChange={e=>setForm({...form,localidade:e.target.value})}/></label><label>Concelho<input value={form.concelho} onChange={e=>setForm({...form,concelho:e.target.value})}/></label><label>Freguesia<input value={form.freguesia} onChange={e=>setForm({...form,freguesia:e.target.value})}/></label><label>Observações<textarea value={form.observacoes} onChange={e=>setForm({...form,observacoes:e.target.value})}/></label><button onClick={adicionarLocal}>Guardar local</button></main>}
 
     {tab==='desloc' && <main className="card tablecard"><div className="cardtitle"><h2>Deslocações</h2><button className="secondary" onClick={exportarJSON}>Exportar</button></div>{desloc.length===0?<p>Sem deslocações registadas.</p>:<div className="tablewrap"><table><thead><tr><th>Data</th><th>Hora</th><th>Destino</th><th>Km/PK</th><th>GPS</th></tr></thead><tbody>{desloc.map(d=><tr key={d.id}><td>{d.data}</td><td>{d.hora}</td><td>{d.destino}</td><td>{d.pk}</td><td>{d.gps}</td></tr>)}</tbody></table></div>}</main>}
-    {navTarget && <div className="modalback" onClick={()=>setNavTarget(null)}><div className="navmodal" onClick={e=>e.stopPropagation()}><h2>Navegar para este local?</h2><p className="navdest">{navTarget.titulo}</p><p className="mini">Km/PK {navTarget.km || navTarget.pk || '-'}{navTarget.concelho ? ` · ${navTarget.concelho}` : ''}</p><div className="navchoices"><button onClick={()=>abrirNavegacao(navTarget,'google')}>Google Maps</button><button onClick={()=>abrirNavegacao(navTarget,'waze')}>Waze</button></div><button className="secondary full" onClick={()=>setNavTarget(null)}>Cancelar</button></div></div>}
-    <footer>RJP Navigator V3.0 · PK 21+190–191+197 · uso interno/académico · dados guardados localmente no dispositivo</footer>
+    {navTarget && <div className="modalback" onClick={()=>setNavTarget(null)}><div className="navmodal" onClick={e=>e.stopPropagation()}><h2>Escolher aplicação de navegação</h2><p className="navdest">{navTarget.titulo}</p><p className="mini">Km {kmVisivel(navTarget) || '-'}{navTarget.concelho ? ` · ${navTarget.concelho}` : ''}</p><div className="navchoices"><button onClick={()=>abrirNavegacao(navTarget,'google')}>Google Maps</button><button onClick={()=>abrirNavegacao(navTarget,'waze')}>Waze</button></div><button className="secondary full" onClick={()=>setNavTarget(null)}>Cancelar</button></div></div>}
+    <footer>RJP Navigator V3.1.0 · PK 21+190–191+197 · uso interno/académico · dados guardados localmente no dispositivo</footer>
   </div>
 }
 

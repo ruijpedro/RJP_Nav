@@ -8,12 +8,12 @@ export const estacoesLinhaOeste = [
     "km": 25.377,
     "estado": "Com Exploração",
     "linha": "Linha do Oeste",
-    "freguesia": "Almargem do Bispo, Pêro Pinheiro e Montelavar",
+    "freguesia": "Almargem Do Bispo, Pêro Pinheiro E Montelavar",
     "concelho": "Sintra",
     "distrito": "Lisboa",
     "lat": 38.83054718,
     "lng": -9.30002749,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "pedra-furada",
@@ -24,12 +24,12 @@ export const estacoesLinhaOeste = [
     "km": 29.931,
     "estado": "Com Exploração",
     "linha": "Linha do Oeste",
-    "freguesia": "Almargem do Bispo, Pêro Pinheiro e Montelavar",
+    "freguesia": "Almargem Do Bispo, Pêro Pinheiro E Montelavar",
     "concelho": "Sintra",
     "distrito": "Lisboa",
     "lat": 38.87010524,
-    "lng": -0.92955188,
-    "fonteGps": "SIG IP"
+    "lng": -9.2955188,
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "mafra",
@@ -40,15 +40,15 @@ export const estacoesLinhaOeste = [
     "km": 33.212,
     "estado": "Com Exploração",
     "linha": "Linha do Oeste",
-    "freguesia": "Igreja Nova e Cheleiros",
+    "freguesia": "Igreja Nova E Cheleiros",
     "concelho": "Mafra",
     "distrito": "Lisboa",
     "lat": 38.89745692,
     "lng": -9.29137873,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
-    "id": "alcain-a-moinhos",
+    "id": "alcaina-moinhos",
     "nome": "Alcainça-Moinhos",
     "tipo": "Apeadeiro",
     "abreviatura": "AMH",
@@ -56,12 +56,12 @@ export const estacoesLinhaOeste = [
     "km": 35.574,
     "estado": "Com Exploração",
     "linha": "Linha do Oeste",
-    "freguesia": "Malveira e São Miguel de Alcainça",
+    "freguesia": "Malveira E São Miguel De Alcainça",
     "concelho": "Mafra",
     "distrito": "Lisboa",
     "lat": 38.91621545,
-    "lng": -0.92830749,
-    "fonteGps": "SIG IP"
+    "lng": -9.2830749,
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "malveira",
@@ -72,12 +72,12 @@ export const estacoesLinhaOeste = [
     "km": 38.367,
     "estado": "Com Exploração",
     "linha": "Linha do Oeste",
-    "freguesia": "Malveira e São Miguel de Alcainça",
+    "freguesia": "Malveira E São Miguel De Alcainça",
     "concelho": "Mafra",
     "distrito": "Lisboa",
     "lat": 38.92877249,
     "lng": -9.25736803,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "jerumelo",
@@ -93,7 +93,7 @@ export const estacoesLinhaOeste = [
     "distrito": "Lisboa",
     "lat": 38.94964329,
     "lng": -9.23426006,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "sapataria",
@@ -108,8 +108,8 @@ export const estacoesLinhaOeste = [
     "concelho": "Sobral De Monte Agraço",
     "distrito": "Lisboa",
     "lat": 38.96879995,
-    "lng": -0.91993513,
-    "fonteGps": "SIG IP"
+    "lng": -9.1993513,
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "pero-negro",
@@ -125,7 +125,7 @@ export const estacoesLinhaOeste = [
     "distrito": "Lisboa",
     "lat": 38.98883873,
     "lng": -9.19738711,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "zibreira",
@@ -136,12 +136,12 @@ export const estacoesLinhaOeste = [
     "km": 50.55,
     "estado": "Com Exploração",
     "linha": "Linha do Oeste",
-    "freguesia": "Sobral de Monte Agraço",
+    "freguesia": "Sobral De Monte Agraço",
     "concelho": "Sobral De Monte Agraço",
     "distrito": "Lisboa",
     "lat": 39.00602387,
     "lng": -9.18346937,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "feliteira",
@@ -152,12 +152,12 @@ export const estacoesLinhaOeste = [
     "km": 52.509,
     "estado": "Com Exploração",
     "linha": "Linha do Oeste",
-    "freguesia": "Dois Portos e Runa",
+    "freguesia": "Dois Portos E Runa",
     "concelho": "Torres Vedras",
     "distrito": "Lisboa",
     "lat": 39.02241835,
     "lng": -9.17935175,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "dois-portos",
@@ -168,12 +168,12 @@ export const estacoesLinhaOeste = [
     "km": 55.018,
     "estado": "Com Exploração",
     "linha": "Linha do Oeste",
-    "freguesia": "Dois Portos e Runa",
+    "freguesia": "Dois Portos E Runa",
     "concelho": "Torres Vedras",
     "distrito": "Lisboa",
     "lat": 39.04257009,
     "lng": -9.18465632,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "runa",
@@ -184,12 +184,12 @@ export const estacoesLinhaOeste = [
     "km": 59.31,
     "estado": "Com Exploração",
     "linha": "Linha do Oeste",
-    "freguesia": "Dois Portos e Runa",
+    "freguesia": "Dois Portos E Runa",
     "concelho": "Torres Vedras",
     "distrito": "Lisboa",
     "lat": 39.07297322,
     "lng": -9.20983775,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "torres-vedras",
@@ -200,12 +200,12 @@ export const estacoesLinhaOeste = [
     "km": 64.157,
     "estado": "Com Exploração",
     "linha": "Linha do Oeste",
-    "freguesia": "Santa Maria, São Pedro e Matacães",
+    "freguesia": "Santa Maria, São Pedro E Matacães",
     "concelho": "Torres Vedras",
     "distrito": "Lisboa",
     "lat": 39.09272951,
     "lng": -9.25439432,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "ramalhal",
@@ -219,9 +219,9 @@ export const estacoesLinhaOeste = [
     "freguesia": "Ramalhal",
     "concelho": "Torres Vedras",
     "distrito": "Lisboa",
-    "lat": 0.39139534,
-    "lng": -0.92159978,
-    "fonteGps": "SIG IP"
+    "lat": 39.139534,
+    "lng": -9.2159978,
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "outeiro",
@@ -232,15 +232,15 @@ export const estacoesLinhaOeste = [
     "km": 78.166,
     "estado": "Com Exploração",
     "linha": "Linha do Oeste",
-    "freguesia": "Campelos e Outeiro da Cabeça",
+    "freguesia": "Campelos E Outeiro Da Cabeça",
     "concelho": "Torres Vedras",
     "distrito": "Lisboa",
     "lat": 39.19127342,
     "lng": -9.17717407,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
-    "id": "camar-o",
+    "id": "camaro",
     "nome": "Camarão",
     "tipo": "Apeadeiro",
     "abreviatura": "CMR",
@@ -248,12 +248,12 @@ export const estacoesLinhaOeste = [
     "km": 82.84,
     "estado": "Com Exploração",
     "linha": "Linha do Oeste",
-    "freguesia": "Bombarral e Vale Covo",
+    "freguesia": "Bombarral E Vale Covo",
     "concelho": "Bombarral",
     "distrito": "Leiria",
     "lat": 39.22763414,
     "lng": -9.16600558,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "bombarral",
@@ -264,15 +264,15 @@ export const estacoesLinhaOeste = [
     "km": 87.26,
     "estado": "Com Exploração",
     "linha": "Linha do Oeste",
-    "freguesia": "Bombarral e Vale Covo",
+    "freguesia": "Bombarral E Vale Covo",
     "concelho": "Bombarral",
     "distrito": "Leiria",
     "lat": 39.26511081,
     "lng": -9.15335341,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
-    "id": "pa-l",
+    "id": "pal",
     "nome": "Paúl",
     "tipo": "Apeadeiro",
     "abreviatura": "PAU",
@@ -285,10 +285,10 @@ export const estacoesLinhaOeste = [
     "distrito": "Leiria",
     "lat": 39.29420089,
     "lng": -9.16266933,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
-    "id": "s-o-mamede",
+    "id": "so-mamede",
     "nome": "São Mamede",
     "tipo": "Estação",
     "abreviatura": "SME",
@@ -299,9 +299,9 @@ export const estacoesLinhaOeste = [
     "freguesia": "Roliça",
     "concelho": "Bombarral",
     "distrito": "Leiria",
-    "lat": 3.93220341,
+    "lat": 39.3220341,
     "lng": -9.17941497,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "dagorda-peniche",
@@ -312,12 +312,12 @@ export const estacoesLinhaOeste = [
     "km": 97.033,
     "estado": "Com Exploração",
     "linha": "Linha do Oeste",
-    "freguesia": "Santa Maria, São Pedro e Sobral da Lagoa",
+    "freguesia": "Santa Maria, São Pedro E Sobral Da Lagoa",
     "concelho": "Óbidos",
     "distrito": "Leiria",
     "lat": 39.34442327,
     "lng": -9.17244346,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "bidos",
@@ -328,12 +328,12 @@ export const estacoesLinhaOeste = [
     "km": 99.597,
     "estado": "Com Exploração",
     "linha": "Linha do Oeste",
-    "freguesia": "Santa Maria, São Pedro e Sobral da Lagoa",
+    "freguesia": "Santa Maria, São Pedro E Sobral Da Lagoa",
     "concelho": "Óbidos",
     "distrito": "Leiria",
     "lat": 39.36489503,
     "lng": -9.15907105,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "caldas-da-rainha",
@@ -344,12 +344,12 @@ export const estacoesLinhaOeste = [
     "km": 105.011,
     "estado": "Com Exploração",
     "linha": "Linha do Oeste",
-    "freguesia": "Nossa Senhora do Pópulo, Coto e São Gregório",
+    "freguesia": "Nossa Senhora Do Pópulo, Coto E São Gregório",
     "concelho": "Caldas Da Rainha",
     "distrito": "Leiria",
     "lat": 39.40647283,
     "lng": -9.14015956,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "campo-serra",
@@ -360,12 +360,12 @@ export const estacoesLinhaOeste = [
     "km": 108.36,
     "estado": "Com Exploração",
     "linha": "Linha do Oeste",
-    "freguesia": "Tornada e Salir do Porto",
+    "freguesia": "Tornada E Salir Do Porto",
     "concelho": "Caldas Da Rainha",
     "distrito": "Leiria",
     "lat": 39.43541411,
     "lng": -9.14984575,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "bouro",
@@ -376,12 +376,12 @@ export const estacoesLinhaOeste = [
     "km": 112.249,
     "estado": "Com Exploração",
     "linha": "Linha do Oeste",
-    "freguesia": "Tornada e Salir do Porto",
+    "freguesia": "Tornada E Salir Do Porto",
     "concelho": "Caldas Da Rainha",
     "distrito": "Leiria",
     "lat": 39.46995945,
     "lng": -9.15110484,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "salir-do-porto",
@@ -392,15 +392,15 @@ export const estacoesLinhaOeste = [
     "km": 114.77,
     "estado": "Com Exploração",
     "linha": "Linha do Oeste",
-    "freguesia": "Tornada e Salir do Porto",
+    "freguesia": "Tornada E Salir Do Porto",
     "concelho": "Caldas Da Rainha",
     "distrito": "Leiria",
     "lat": 39.49238552,
     "lng": -9.14722051,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
-    "id": "s-o-martinho-do-porto",
+    "id": "so-martinho-do-porto",
     "nome": "São Martinho do Porto",
     "tipo": "Estação",
     "abreviatura": "SMP",
@@ -408,15 +408,15 @@ export const estacoesLinhaOeste = [
     "km": 117.087,
     "estado": "Com Exploração",
     "linha": "Linha do Oeste",
-    "freguesia": "São Martinho do Porto",
+    "freguesia": "São Martinho Do Porto",
     "concelho": "Alcobaça",
     "distrito": "Leiria",
     "lat": 39.50816682,
     "lng": -9.13319642,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
-    "id": "famalic-o-da-nazar",
+    "id": "famalico-da-nazar",
     "nome": "Famalicão da Nazaré",
     "tipo": "Apeadeiro",
     "abreviatura": "FNA",
@@ -427,9 +427,9 @@ export const estacoesLinhaOeste = [
     "freguesia": "Famalicão",
     "concelho": "Nazaré",
     "distrito": "Leiria",
-    "lat": 3.95316061,
+    "lat": 39.5316061,
     "lng": -9.08571674,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "cela",
@@ -445,7 +445,7 @@ export const estacoesLinhaOeste = [
     "distrito": "Leiria",
     "lat": 39.55354409,
     "lng": -9.05513406,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "valado",
@@ -456,12 +456,12 @@ export const estacoesLinhaOeste = [
     "km": 130.617,
     "estado": "Com Exploração",
     "linha": "Linha do Oeste",
-    "freguesia": "Valado dos Frades",
+    "freguesia": "Valado Dos Frades",
     "concelho": "Nazaré",
     "distrito": "Leiria",
     "lat": 39.58451071,
     "lng": -9.01767285,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "fanhais",
@@ -476,8 +476,8 @@ export const estacoesLinhaOeste = [
     "concelho": "Nazaré",
     "distrito": "Leiria",
     "lat": 39.62551472,
-    "lng": -0.89992484,
-    "fonteGps": "SIG IP"
+    "lng": -8.9992484,
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "pataias",
@@ -488,15 +488,15 @@ export const estacoesLinhaOeste = [
     "km": 139.356,
     "estado": "Com Exploração",
     "linha": "Linha do Oeste",
-    "freguesia": "Pataias e Martingança",
+    "freguesia": "Pataias E Martingança",
     "concelho": "Alcobaça",
     "distrito": "Leiria",
     "lat": 39.65551486,
     "lng": -8.98489252,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
-    "id": "martingan-a",
+    "id": "martingana",
     "nome": "Martingança",
     "tipo": "Estação",
     "abreviatura": "MMA",
@@ -504,12 +504,12 @@ export const estacoesLinhaOeste = [
     "km": 144.696,
     "estado": "Com Exploração",
     "linha": "Linha do Oeste",
-    "freguesia": "Pataias e Martingança",
+    "freguesia": "Pataias E Martingança",
     "concelho": "Alcobaça",
     "distrito": "Leiria",
     "lat": 39.68724928,
     "lng": -8.94581369,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "marinha-grande",
@@ -525,7 +525,7 @@ export const estacoesLinhaOeste = [
     "distrito": "Leiria",
     "lat": 39.73680363,
     "lng": -8.92619275,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "leiria",
@@ -536,12 +536,12 @@ export const estacoesLinhaOeste = [
     "km": 160.691,
     "estado": "Com Exploração",
     "linha": "Linha do Oeste",
-    "freguesia": "Marrazes e Barosa",
+    "freguesia": "Marrazes E Barosa",
     "concelho": "Leiria",
     "distrito": "Leiria",
     "lat": 39.75662229,
     "lng": -8.82785068,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "regueira-de-pontes",
@@ -552,12 +552,12 @@ export const estacoesLinhaOeste = [
     "km": 165.355,
     "estado": "Com Exploração",
     "linha": "Linha do Oeste",
-    "freguesia": "Regueira de Pontes",
+    "freguesia": "Regueira De Pontes",
     "concelho": "Leiria",
     "distrito": "Leiria",
     "lat": 39.79758539,
     "lng": -8.83723409,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "monte-real",
@@ -568,12 +568,12 @@ export const estacoesLinhaOeste = [
     "km": 172.625,
     "estado": "Com Exploração",
     "linha": "Linha do Oeste",
-    "freguesia": "Souto da Carpalhosa e Ortigosa",
+    "freguesia": "Souto Da Carpalhosa E Ortigosa",
     "concelho": "Leiria",
     "distrito": "Leiria",
     "lat": 39.85599444,
     "lng": -8.84768394,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "monte-redondo",
@@ -584,12 +584,12 @@ export const estacoesLinhaOeste = [
     "km": 177.782,
     "estado": "Com Exploração",
     "linha": "Linha do Oeste",
-    "freguesia": "Monte Redondo e Carreira",
+    "freguesia": "Monte Redondo E Carreira",
     "concelho": "Leiria",
     "distrito": "Leiria",
     "lat": 39.90033157,
     "lng": -8.83436788,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
     "id": "guia",
@@ -600,15 +600,15 @@ export const estacoesLinhaOeste = [
     "km": 184.107,
     "estado": "Com Exploração",
     "linha": "Linha do Oeste",
-    "freguesia": "Guia, Ilha e Mata Mourisca",
+    "freguesia": "Guia, Ilha E Mata Mourisca",
     "concelho": "Pombal",
     "distrito": "Leiria",
     "lat": 39.94816285,
     "lng": -8.80175265,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   },
   {
-    "id": "carri-o",
+    "id": "carrio",
     "nome": "Carriço",
     "tipo": "Apeadeiro",
     "abreviatura": "CIC",
@@ -621,6 +621,6 @@ export const estacoesLinhaOeste = [
     "distrito": "Leiria",
     "lat": 39.98060773,
     "lng": -8.81111776,
-    "fonteGps": "SIG IP"
+    "fonteGps": "SIG IP — coordenada do ativo"
   }
-];
+]

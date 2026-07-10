@@ -22,34 +22,33 @@ jobs:
         with:
           node-version: 22
 
-      - name: Show versions
+      - name: Enable Yarn
         run: |
+          corepack enable
+          corepack prepare yarn@4.9.2 --activate
           node --version
-          npm --version
+          yarn --version
 
       - name: Install dependencies
-        env:
-          NODE_ENV: development
-          NPM_CONFIG_PRODUCTION: "false"
+        run: yarn install
+
+      - name: Verify tools
         run: |
-          npm install --include=dev --legacy-peer-deps --no-audit --no-fund
-          npm ls vite @vitejs/plugin-react @capacitor/cli @capacitor/android @capacitor/geolocation
-          test -x node_modules/.bin/vite
-          test -x node_modules/.bin/cap
+          yarn vite --version
+          yarn cap --version
 
       - name: Build WebApp
-        run: npx --no-install vite build
+        run: yarn build
 
       - name: Create Android project
         run: |
           if [ ! -d android ]; then
-            npx --no-install cap add android
+            yarn cap add android
           fi
-          npx --no-install cap sync android
+          yarn cap sync android
 
       - name: Apply Android permissions and icons
         run: |
-          MANIFEST="android/app/src/main/AndroidManifest.xml"
           python3 - <<'PY'
           from pathlib import Path
           p = Path("android/app/src/main/AndroidManifest.xml")

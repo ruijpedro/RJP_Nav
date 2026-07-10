@@ -1,4 +1,4 @@
-name: Build RJP Navigator Android APK V3.0.6
+name: Build RJP Navigator Android APK V3.0.7
 
 on:
   push:
@@ -57,17 +57,36 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          p = Path("android/app/src/main/AndroidManifest.xml")
-          s = p.read_text(encoding="utf-8")
+          import re
+
+          manifest = Path("android/app/src/main/AndroidManifest.xml")
+          xml = manifest.read_text(encoding="utf-8")
+
           permissions = [
               '<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />',
-              '<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />'
+              '<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />',
           ]
-          insert_at = s.find('>') + 1
-          for permission in reversed(permissions):
-              if permission not in s:
-                  s = s[:insert_at] + "\n    " + permission + s[insert_at:]
-          p.write_text(s, encoding="utf-8")
+
+          # Insert permissions immediately after the opening <manifest ...> tag.
+          # Never insert after the XML declaration, which would make the file invalid.
+          match = re.search(r'<manifest\b[^>]*>', xml, flags=re.DOTALL)
+          if not match:
+              raise SystemExit("ERRO: tag <manifest> não encontrada")
+
+          missing = [permission for permission in permissions if permission not in xml]
+          if missing:
+              block = "\n    " + "\n    ".join(missing)
+              xml = xml[:match.end()] + block + xml[match.end():]
+
+          manifest.write_text(xml, encoding="utf-8")
+          PY
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          manifest = Path("android/app/src/main/AndroidManifest.xml")
+          ET.parse(manifest)
+          print("AndroidManifest.xml válido")
           PY
 
           for density in mdpi hdpi xhdpi xxhdpi xxxhdpi; do

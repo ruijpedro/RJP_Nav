@@ -6,3 +6,7 @@
 .navmodal{width:min(420px,100%);background:#fff;border-radius:20px;padding:22px;box-shadow:0 24px 70px rgba(0,0,0,.35);text-align:center}
 .navmodal h2{margin:0 0 8px}.navdest{font-weight:800;font-size:1.15rem;margin:8px 0}.navchoices{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0 12px}.navchoices button{min-height:52px;font-size:1rem}.full{width:100%}
 .row{cursor:pointer}
+
+/* V3.2 — módulos abertos e importação Drive/Excel */
+.importgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding:14px}.importcard{display:flex;flex-direction:column}.importcard button{align-self:flex-start}.syncstat{margin-top:14px;padding:10px 12px;border-radius:12px;background:#eef8f2;color:var(--ip)}.empty{text-align:center;padding:24px 12px;color:var(--muted);border:1px dashed var(--line);border-radius:14px}.empty b{color:var(--text)}
+@media(max-width:950px){.importgrid{grid-template-columns:1fr}}
